@@ -33,7 +33,7 @@ contract ErbaVesting is Ownable
 		emit NewScheduleAdded(_beneficiary);
 	}
 
-	function withdrawTokens() external
+	function withdrawMyTokens() external
 	{
 		require(now >= VESTING_END_TIME);
 
