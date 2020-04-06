@@ -48,7 +48,6 @@ contract ErbaVesting is Ownable
 	function tokenFallback(address _from, uint256 _value, bytes calldata _data) external
 	{
 		require(msg.sender == token);
-		// require(FixedSupplyERC223(token).balanceOf(address(this)) == 0);
 		require(now < VESTING_END_TIME);
 
 		emit ReceivedTokens(_from, _value, _data);
@@ -69,13 +68,14 @@ contract ErbaVesting is Ownable
 
 	function createVestings() external onlyOwner
 	{
-		require(FixedSupplyERC223(token).balanceOf(address(this)) == 2000000 * FixedSupplyERC223(token).DECIMALS_MULTIPLIER());
+		uint256 power =  FixedSupplyERC223(token).DECIMALS_MULTIPLIER();
+		require(FixedSupplyERC223(token).balanceOf(address(this)) == 2000000 * power);
 
-		createVestingSchedule(0xf0b08dEea570D9D11b35De05C3A268a7FB4a2b9F, 900000);
-		createVestingSchedule(0x0C2e90103029979434B16b15d5Aa629655d87851, 800000);
-		createVestingSchedule(0x01571B9720D7B60dA22cfC214B5343C83E2CBdcf, 200000);
-		createVestingSchedule(0x5EC1206363d6adB56d40Ec26c23ec8A31b0847cf, 50000);
-		createVestingSchedule(0xd57D4c63a2C38920d9831ECda2466fcFeE9161B5, 50000);
+		createVestingSchedule(0xf0b08dEea570D9D11b35De05C3A268a7FB4a2b9F, 900000 * power);
+		createVestingSchedule(0x0C2e90103029979434B16b15d5Aa629655d87851, 800000 * power);
+		createVestingSchedule(0x01571B9720D7B60dA22cfC214B5343C83E2CBdcf, 200000 * power);
+		createVestingSchedule(0x5EC1206363d6adB56d40Ec26c23ec8A31b0847cf, 50000 * power);
+		createVestingSchedule(0xd57D4c63a2C38920d9831ECda2466fcFeE9161B5, 50000 * power);
 	}
 
 	function timeTillWithdraw() external view returns (uint256)
